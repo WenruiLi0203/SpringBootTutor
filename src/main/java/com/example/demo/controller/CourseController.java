@@ -56,7 +56,7 @@ public class CourseController {
     @PostMapping(path = "/addCourse", produces = "application/json")
     public HttpStatus addOneCourse(@RequestBody CourseDto course){
         try{
-            courseService.addOneCourse(course);
+            courseService.addCourse(course);
             return HttpStatus.OK;
         }catch (Exception e){
             return HttpStatus.BAD_REQUEST;

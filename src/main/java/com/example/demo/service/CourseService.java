@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Component
@@ -33,20 +34,19 @@ public class CourseService {
         return courseRepository.deleteOneCourse(input);
     }
 
-    public Boolean addOneCourse(CourseDto course){
-        Course courseToCreate = Course.builder()
+    public void addCourse(CourseDto course) throws Exception{
+        Course courseBeingSaved = Course.builder()
                 .className(course.getCourseName())
-                .instructor(new Instructor("Amy", "Jobs", "Phd", "TownHall201"))
-                .startDate(new Date("8/1/2018"))
-                .endDate(new Date("12/24/2018"))
-                .timeFrame("8am-10am")
+                .instructor(course.getInstructor())
+                .startDate(course.getStartDate())
+                .endDate(course.getEndDate())
+                .timeFrame(course.getTimeFrame())
                 .build();
-
-        try{
-            courseRepository.addOneCourse(courseToCreate);
-            return true;
-        }catch (Exception e){
-            return false;
+            try {
+            courseRepository.saveAndFlush(courseBeingSaved);
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
         }
+
     }
 }
