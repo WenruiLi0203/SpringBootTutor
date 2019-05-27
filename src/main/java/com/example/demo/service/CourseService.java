@@ -34,19 +34,19 @@ public class CourseService {
         return courseRepository.deleteOneCourse(input);
     }
 
-    public void addCourse(CourseDto course) throws Exception{
+    public void addCourse(Course course) throws Exception{
         Course courseBeingSaved = Course.builder()
-                .className(course.getCourseName())
+                .className(course.getClassName())
                 .instructor(course.getInstructor())
                 .startDate(course.getStartDate())
                 .endDate(course.getEndDate())
                 .timeFrame(course.getTimeFrame())
                 .build();
-            try {
-            courseRepository.saveAndFlush(courseBeingSaved);
-        } catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
 
+        courseRepository.addOneCourse(courseBeingSaved);
+    }
+
+    public void updateCourse(Course course){
+        courseRepository.updateCourse(course);
     }
 }

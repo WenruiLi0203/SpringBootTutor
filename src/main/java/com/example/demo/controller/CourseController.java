@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 // single function interface
@@ -25,13 +26,6 @@ public class CourseController {
 
         return new ResponseEntity<>(allCourses,HttpStatus.OK);
     }
-
-//    @GetMapping(path = "/api/course/findAllCourses", produces = "application/json")
-//    public HttpEntity<List<CourseDto>> findAllCourses(){
-//        List<CourseDto> allCourses = courseService.findAllCourses();
-//
-//        return new ResponseEntity<>(allCourses, HttpStatus.OK);
-//    }
 
     @GetMapping(path = "/look-up/{inputString}", produces = "application/json")
     public HttpEntity<Course> searchCourse(@PathVariable("inputString") String inputString) {
@@ -54,12 +48,25 @@ public class CourseController {
     }
 
     @PostMapping(path = "/addCourse", produces = "application/json")
-    public HttpStatus addOneCourse(@RequestBody CourseDto course){
+    public HttpStatus addOneCourse(@RequestBody @NotNull Course course){
         try{
             courseService.addCourse(course);
             return HttpStatus.OK;
         }catch (Exception e){
             return HttpStatus.BAD_REQUEST;
+        }
+    }
+
+    @PutMapping(path = "/updateCourse", produces = "application/json")
+    public  HttpEntity<Course> updateCourse(@RequestBody @NotNull Course course){
+
+        try{
+            courseService.updateCourse(course);
+            List<Course> allCourses = courseService.findAllCourses();
+            return new ResponseEntity(allCourses, HttpStatus.OK);
+        }catch (Exception e){
+            List<Course> allCourses = courseService.findAllCourses();
+            return new ResponseEntity(allCourses, HttpStatus.BAD_REQUEST);
         }
     }
 }

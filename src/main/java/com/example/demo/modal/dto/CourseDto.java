@@ -12,7 +12,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseDto {
-
     private String courseName;
     private Instructor instructor;
     private Date startDate;

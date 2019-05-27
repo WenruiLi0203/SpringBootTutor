@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public class CourseRepository {
     List<Course> courses = new ArrayList<>();
-
     public CourseRepository() {
         Course javaOne = Course.builder()
                 .className("Java I")
@@ -68,12 +67,20 @@ public class CourseRepository {
         return false;
     }
 
-    public Boolean addOneCourse(Course course){
-        try{
-            courses.add(course);
-            return true;
-        }catch (Exception e){
-            return false;
+    public void addOneCourse(Course course){
+        courses.add(course);
+    }
+
+    public void updateCourse(Course course){
+        String cName = course.getClassName();
+        String replaced = cName.replaceAll("_"," ");
+        for(Course c : courses){
+            if(c.getClassName().equals(replaced)){
+                c.setInstructor(course.getInstructor());
+                c.setStartDate(course.getStartDate());
+                c.setEndDate(course.getEndDate());
+                c.setTimeFrame(course.getTimeFrame());
+            }
         }
     }
 }
